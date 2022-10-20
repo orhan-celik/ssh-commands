@@ -1,7 +1,7 @@
 # apache-virtual-host
 Some SSL Commands OS : Ubuntu 22.04
 
-#### 2 sunucu arasında ssh dosya taşıma
+#### 2 sunucu arasında ssh ile dosya taşıma
 ~~~ ssh
 sudo scp -r -P22 /var/www/html/* [target_user]@[target_server_ip]:/var/www/html/tasima_yedekleri/
 ~~~
