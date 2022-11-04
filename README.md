@@ -18,5 +18,5 @@ cat /etc/os-release
 
 #### Klasör ve klasörün altındaki dosyaların sahipliğini değiştirme
 ~~~ ssh
-sudo chown -R /var/www/html/[folder]/ [user]:[user]
+sudo chown -R [user]:[user] /var/www/html/[folder]/
 ~~~
