@@ -25,3 +25,13 @@ sudo chown -R [user]:[user] /var/www/html/[folder]/
 ~~~ ssh
 sudo chmod -R 0777 /var/www/html/[folder]/
 ~~~
+
+#### Klasör ve klasörün altındaki dosyaları kopyalama
+~~~ ssh
+cp -R [folder]/* [target_folder]/
+~~~
+
+#### Dosyanın adını değiştirme
+~~~ ssh
+mv old_file.php new_file.php
+~~~
