@@ -15,3 +15,8 @@ find /var/www/html/[search_folder_path]/ -name "*.[search_extension]" -exec grep
 ~~~ ssh
 cat /etc/os-release
 ~~~
+
+#### Klasör ve klasörün altındaki dosyaların sahipliğini değiştirme
+~~~ ssh
+sudo chown -R /var/www/html/[folder]/ [user]:[user]
+~~~
