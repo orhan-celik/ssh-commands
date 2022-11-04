@@ -20,3 +20,8 @@ cat /etc/os-release
 ~~~ ssh
 sudo chown -R [user]:[user] /var/www/html/[folder]/
 ~~~
+
+#### Klasör ve klasörün altındaki dosyaların iznini değiştirme
+~~~ ssh
+sudo chmod -R 0777 /var/www/html/[folder]/
+~~~
