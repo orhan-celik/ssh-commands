@@ -35,3 +35,8 @@ cp -R [folder]/* [target_folder]/
 ~~~ ssh
 mv old_file.php new_file.php
 ~~~
+
+#### Çalışan Servisleri Listeleme
+~~~ ssh
+systemctl list-units --all --type=service --no-pager | grep running
+~~~
