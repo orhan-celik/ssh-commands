@@ -40,3 +40,14 @@ mv old_file.php new_file.php
 ~~~ ssh
 systemctl list-units --all --type=service --no-pager | grep running
 ~~~
+
+#### MySQL Kullanıcı Oluşturma ve Yetkilerini Ayarlama
+~~~ ssh
+mysql -u root -p (Root ile mysqle bağlanıyoruz)
+CREATE USER 'orhancelik'@'%' IDENTIFIED BY '12345'; (Kullanıcıyı oluşturuyoruz)
+SELECT * FROM mysql.user; (Kullanıcıları kontrol ediyoruz)
+(sadece okuma ve yazma yetkisi) => GRANT SELECT, INSERT ON [veritabanı adı yada tüm veritabanı (*)].* TO 'orhancelik'@'%';
+(tüm yetkiler) => GRANT ALL ON *.* TO 'orhancelik'@'%' WITH GRANT OPTION; (Okuma ve yazma yetkisi veriyoruz)
+FLUSH PRIVILEGES; (değişiklikleri hemen uyguluyoruz)
+\q (Çıkış yapıyoruz)
+~~~
