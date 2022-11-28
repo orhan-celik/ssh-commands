@@ -106,7 +106,7 @@ FLUSH PRIVILEGES;
 \q
 ~~~
 
-*Kullanıcıyı yetkilerini görmek istersek*
+*DB ve DB deki tablo boyularını görmek istersek*
 
 ~~~ ssh 
 SELECT TABLE_SCHEMA AS `Database`, 
