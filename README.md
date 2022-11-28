@@ -41,13 +41,67 @@ mv old_file.php new_file.php
 systemctl list-units --all --type=service --no-pager | grep running
 ~~~
 
-#### MySQL Kullanıcı Oluşturma ve Yetkilerini Ayarlama
-~~~ ssh
-mysql -u root -p (Root ile mysqle bağlanıyoruz)
-CREATE USER 'orhancelik'@'%' IDENTIFIED BY '12345'; (Kullanıcıyı oluşturuyoruz)
-SELECT * FROM mysql.user; (Kullanıcıları kontrol ediyoruz)
-(sadece okuma ve yazma yetkisi) => GRANT SELECT, INSERT ON [veritabanı adı yada tüm veritabanı (*)].* TO 'orhancelik'@'%';
-(tüm yetkiler) => GRANT ALL ON *.* TO 'orhancelik'@'%' WITH GRANT OPTION; (Okuma ve yazma yetkisi veriyoruz)
-FLUSH PRIVILEGES; (değişiklikleri hemen uyguluyoruz)
-\q (Çıkış yapıyoruz)
+#### MySQL Kullanıcı İşlemleri
+*Root ile mysqle bağlanıyoruz*
+~~~ ssh 
+mysql -u root -p
+~~~
+
+*Kullanıcıyı oluşturuyoruz*
+~~~ ssh 
+CREATE USER 'orhancelik'@'%' IDENTIFIED BY '12345';
+~~~
+
+*Kullanıcıları kontrol ediyoruz*
+~~~ ssh 
+*SELECT * FROM mysql.user;
+~~~
+
+*Sadece belirli yetkileri vermek istersek*
+~~~ ssh 
+GRANT SELECT, INSERT ON [veritabanı adı yada tüm veritabanı (*)].* TO 'orhancelik'@'%';
+~~~
+
+*Tüm yetkileri vermek istersek*
+~~~ ssh 
+GRANT ALL ON *.* TO 'orhancelik'@'%' WITH GRANT OPTION;
+~~~
+
+*Verdiğimiz izinleri silmek istersek*
+~~~ ssh 
+REVOKE SELECT, INSERT ON *.* FROM 'orhancelik'@%;
+~~~
+
+*Kullanıcı parolasını değiştirmek istersek* (Versiyona göre değişiyor)*
+~~~ ssh 
+SELECT version();
+~~~
+
+*MySQL 5.76 üzerindeyse*
+~~~ ssh 
+ALTER USER 'orhancelik'@'%' IDENTIFIED BY 'yeni şifre';
+~~~
+
+*MySQL 5.76 altındaysa*
+~~~ ssh 
+SET PASSWORD FOR 'orhancelik'@'%' = PASSWORD('yeni şifre');
+~~~
+
+*Kullanıcıyı yetkilerini görmek istersek*
+~~~ ssh 
+SHOW GRANTS FOR 'orhancelik'@'%';
+~~~
+
+*Kullanıcıyı silmek istersek*
+~~~ ssh 
+DROP USER 'orhancelik'@'%';
+~~~
+
+*Değişiklikleri anında uyguluyoruz ve çıkış yapıyoruz*
+~~~ ssh 
+FLUSH PRIVILEGES;
+~~~
+
+~~~ ssh 
+\q
 ~~~
