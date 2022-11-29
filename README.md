@@ -122,3 +122,8 @@ ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)`
 FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'db_name'
 ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC
 ~~~
+
+#### MySQL Yedek Alma
+~~~ ssh 
+mysqldump --routines=true --triggers --events -u root -p [db_name] --ignore-table=[table_name_1] --ignore-table=[table_name_2] > export_db.sql
+~~~
