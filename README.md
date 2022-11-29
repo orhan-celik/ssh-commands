@@ -54,7 +54,7 @@ CREATE USER 'orhancelik'@'%' IDENTIFIED BY '12345';
 
 *Kullanıcıları kontrol ediyoruz*
 ~~~ ssh 
-*SELECT * FROM mysql.user;
+SELECT * FROM mysql.user;
 ~~~
 
 *Sadece belirli yetkileri vermek istersek*
@@ -72,7 +72,7 @@ GRANT ALL ON *.* TO 'orhancelik'@'%' WITH GRANT OPTION;
 REVOKE SELECT, INSERT ON *.* FROM 'orhancelik'@%;
 ~~~
 
-*Kullanıcı parolasını değiştirmek istersek* (Versiyona göre değişiyor)*
+*Kullanıcı parolasını değiştirmek istersek* (Versiyona göre değişiyor)
 ~~~ ssh 
 SELECT version();
 ~~~
