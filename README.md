@@ -41,6 +41,11 @@ mv old_file.php new_file.php
 systemctl list-units --all --type=service --no-pager | grep running
 ~~~
 
+#### Dosyanın Yolunu Bulma
+~~~ ssh
+find / -iname info.php
+~~~
+
 #### MySQL Kullanıcı İşlemleri
 *Root ile mysqle bağlanıyoruz*
 ~~~ ssh 
