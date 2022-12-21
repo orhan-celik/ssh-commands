@@ -132,3 +132,27 @@ ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC
 ~~~ ssh 
 mysqldump --routines=true --triggers --events -u root -p [db_name] --ignore-table=[table_name_1] --ignore-table=[table_name_2] > export_db.sql
 ~~~
+
+#### PFX Sertifika Çıkartıp Sunucuya Yükleme
+~~~ ssh 
+OS : Ubuntu
+VH : Apache
+
+// Pfx dosyasını sunucuya atıyoruz, /etc/ssl/<certificate_name>.pfx.
+
+// Private Key oluşturuyoruz.
+openssl pkcs12 -in "<certificate_name>.pfx" -nocerts -out private.key -nodes
+
+// Sertifikayı oluşturuyoruz.
+openssl pkcs12 -in "<certificate_name>.pfx" -nokeys -out certificate.crt
+
+// Virtual Host ayarlarımızın olduğu dosyayı açıyoruz.
+nano /etc/apache2/mods-enabled/<your-site>.conf
+
+// Private Key ve SSL yollarınızı apacheye veriyoruz.
+SSLCertificateFile /etc/ssl/<certificate_name>.pfx.
+SSLCertificateKeyFile /etc/ssl/<certificate_key>.pfx.
+
+// Apacheye yeniden başlatıp çıkıyoruz.
+sudo service apache2 restart && exit
+~~~
