@@ -156,3 +156,49 @@ SSLCertificateKeyFile /etc/ssl/<certificate_key>.pfx.
 // Apacheye yeniden başlatıp çıkıyoruz.
 sudo service apache2 restart && exit
 ~~~
+
+#### Linux üzerinde shell script yazma
+~~~ ssh 
+OS : Ubuntu
+
+// SENARYO : 
+// Node JS ile çalışan bir servisimiz var, ve sunucu reboot yada restart olduğu zaman bu servisin otomatik olarak ayağa kaldırılmasını istiyoruz.
+// Aksi takdirde herhangi bir sebepten dolayı sunucu yeniden başlatılırsa bu tarz servisleri ayağa kaldırmayı unutuyoruz ve istek atıldığı zaman erişim sağlanamıyor.
+
+// bash kodlarımızı düzenli bir yerde tutmak için shell_scripts adında bir klasör oluşturuyoruz.
+mkdir shell_scripts
+
+// Oluşturduğumuz klasörün içine giriyoruz.
+cd shell_scripts
+
+// Nano yardımıyla bir bash script dosyası oluşturuyoruz.
+nano up_pm2_node_service.sh
+
+// İçerisine aşağıdaki scripti ekliyoruz.
+#!/bin/bash
+up_pm2_node_service(){
+  pm2 start /var/www/html/cron/server.js
+}
+up_pm2_node_service
+
+// Kaydediyoruz
+Ctrl + X => ardından (y) tuşuna basıyoruz.
+
+// Yetkilerini ayarlıyoruz.
+chmod u+x up_pm2_node_service.sh
+
+// Script hazır şimdi bu shell scriptini sunucu reboot olduğunda otomatik çalışmasını ayarlayacağız.
+// Ben bunu crontab ile yapıyorum.
+
+// Crontab açıyoruz.
+crontab -e
+
+// İçerisine aşağıdaki satırı ekliyoruz.
+@reboot /shell_scripts/up_pm2_node_service.sh
+
+// Kaydediyoruz
+Ctrl + X => ardından (y) tuşuna basıyoruz.
+
+// Apacheye yeniden başlatıp çıkıyoruz.
+sudo service apache2 restart && exit
+~~~
