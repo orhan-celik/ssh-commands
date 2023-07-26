@@ -204,7 +204,7 @@ sudo service apache2 restart && exit
 ~~~
 
 
-#### APACHE 2.4.52 to 2.4.57
+#### APACHE 2.4.52 to 2.4.57 (Apache Versiyonu Yükseltme)
 ~~~ ssh
 apache2 -v
 sudo add-apt-repository ppa:ondrej/apache2
