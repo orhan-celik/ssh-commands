@@ -205,10 +205,11 @@ sudo service apache2 restart && exit
 
 
 #### APACHE 2.4.52 to 2.4.57
-
+~~~ ssh
 apache2 -v
 sudo add-apt-repository ppa:ondrej/apache2
 sudo apt update
 sudo apt install apache2
 apache2 -v
 sudo systemctl restart apache2
+~~~
