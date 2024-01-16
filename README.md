@@ -213,3 +213,15 @@ sudo apt install apache2
 apache2 -v
 sudo systemctl restart apache2
 ~~~
+
+
+#### Postgresql kullanıcı işlemleri
+~~~ ssh
+psql -U postgres
+CREATE USER [kullanici_adi] WITH PASSWORD 'şifre';
+GRANT CONNECT ON DATABASE [veritabanı_adı] TO [kullanici_adi];
+\c [veritabanı_adı]
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO [kullanici_adi];
+GRANT INSERT ON TABLE [tablo_adı] TO [kullanici_adi];
+GRANT USAGE, SELECT, UPDATE ON SEQUENCE [seqans_adı] TO [kullanici_adi];
+~~~
