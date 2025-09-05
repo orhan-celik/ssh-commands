@@ -225,3 +225,84 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO [kullanici_adi];
 GRANT INSERT ON TABLE [tablo_adı] TO [kullanici_adi];
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE [seqans_adı] TO [kullanici_adi];
 ~~~
+
+
+#### 🚀 Aynı Sunucuda Birden Fazla Docker Container ile Web Sitesi Yönetimi
+
+Bu `docker-compose` dosyası, aynı sunucuda birden fazla web sitesini yönetmek için **Nginx Reverse Proxy** ve **Let's Encrypt otomatik SSL sertifikası** kurulumunu sağlar. Bu yapı GitHub ve Markdown uyumlu şekilde yazılmıştır.
+
+### ⚙️ Servisler
+
+- **nginx-proxy:**
+  - Tüm gelen HTTP/HTTPS trafiğini ilgili web sitelerine yönlendirir.
+  - Container adı: `nginx-proxy`
+  - Portlar: 80 ve 443
+  - Volumes:
+    - `/var/run/docker.sock` → Docker container bilgilerini okumak için gerekli.
+    - `./certs` → SSL sertifikalarını depolar.
+    - `./vhost.d` → Virtual host konfigürasyonlarını saklar.
+    - `./html` → Varsayılan web içeriği.
+  - Network: `proxy_net`
+
+- **letsencrypt (acme-companion):**
+  - Nginx proxy ile entegre çalışarak sitelere otomatik SSL sertifikası oluşturur ve yeniler.
+  - Container adı: `nginx-letsencrypt`
+  - Environment:
+    - `NGINX_PROXY_CONTAINER=nginx-proxy`
+  - Depends on: `nginx-proxy`
+  - Network: `proxy_net`
+
+### 🌐 Network
+
+- Tüm web container’ları ve proxy container’ları `proxy_net` ağı üzerinden iletişim kurar.
+- `proxy_net` dış bir network olarak tanımlıdır.
+
+### 💡 Kullanım Notları
+
+- Yeni bir web sitesi eklemek için ilgili container’i başlatıp **VIRTUAL_HOST** ve **LETSENCRYPT_HOST** environment değişkenlerini ayarlamanız yeterlidir.
+- Nginx proxy ve Let's Encrypt otomatik olarak çalışır ve SSL sertifikası sağlar.
+- Tüm sertifikalar ve virtual host konfigürasyonları `./certs` ve `./vhost.d` dizinlerinde saklanır.
+
+---
+
+### 📝 Örnek docker-compose Dosyası
+
+```yaml
+version: '3.8'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs:rw
+      - ./vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+    networks:
+      - proxy_net
+
+  letsencrypt:
+    image: nginxproxy/acme-companion
+    container_name: nginx-letsencrypt
+    restart: always
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs:/etc/nginx/certs:rw
+      - ./vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+    depends_on:
+      - nginx-proxy
+    networks:
+      - proxy_net
+
+networks:
+  proxy_net:
+    external: true
+```
